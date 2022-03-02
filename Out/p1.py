@@ -24,18 +24,17 @@ T_ec = T_0 + (P/2)
 # Masking transits:
 phs1 = juliet.utils.get_phases(tim, P, T_0)
 mask_tra = np.where(np.abs(phs1*P) >= 1.5*t14)[0]
+tim, fl, fle = tim[mask_tra], fl[mask_tra], fle[mask_tra]
 
 # Masking eclipses:
 phs2 = juliet.utils.get_phases(tim, P, T_0 + (P/2))
-mask_ecl = np.where(np.abs(phs1*P) >= t14)[0]
+mask_ecl = np.where(np.abs(phs2*P) >= t14)[0]
+tim, fl, fle = tim[mask_ecl], fl[mask_ecl], fle[mask_ecl]
 
-# Total mask
-mask = np.concatenate((mask_tra, mask_ecl))
-tim2, fl2, fle2 = tim[mask], fl[mask], fle[mask]                # This is our dataset!!
 
 # Convert the dataset into dictionaries so that juliet can understand it
 tim_oot, fl_oot, fle_oot = {}, {}, {}
-tim_oot[instrument], fl_oot[instrument], fle_oot[instrument] = tim2, fl2, fle2
+tim_oot[instrument], fl_oot[instrument], fle_oot[instrument] = tim, fl, fle
 
 # Priros:
 ## Instrumental priors
