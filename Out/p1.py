@@ -10,8 +10,8 @@ import os
 # analysis of whole dataset.
 
 # Data to be used:
-tim, fl, fle = np.loadtxt(os.getcwd() + '/Data/KELT-20_sector_TESS14.dat', usecols=(0,1,2), unpack=True)
-instrument = 'TESS14'
+tim, fl, fle = np.loadtxt(os.getcwd() + '/Data/KELT-20_sector_TESS41.dat', usecols=(0,1,2), unpack=True)
+instrument = 'TESS41'
 
 
 # First planetary parameters:
@@ -43,7 +43,7 @@ par_ins = ['mdilution_' + instrument, 'mflux_' + instrument, 'sigma_w_' + instru
 dist_ins = ['fixed', 'normal', 'loguniform']
 hyper_ins = [1., [0., 0.1], [0.1, 10000.]]
 ## GP priros: ExM kernel
-#"""
+"""
 par_gp = ['GP_sigma_' + instrument, 'GP_timescale_' + instrument, 'GP_rho_' + instrument]
 dist_gp = ['loguniform', 'loguniform', 'loguniform']
 hyper_gp = [[1e-5, 10000.], [1e-3,1e2], [1e-3,1e2]]
@@ -52,7 +52,7 @@ hyper_gp = [[1e-5, 10000.], [1e-3,1e2], [1e-3,1e2]]
 par_gp = ['GP_B_' + instrument, 'GP_C_' + instrument, 'GP_L_' + instrument, 'GP_Prot_' + instrument]
 dist_gp = ['loguniform', 'loguniform', 'loguniform','loguniform']
 hyper_gp = [[1e-5,1e3], [1e-5,1e4], [1e-3, 1e3], [1.,1e2]]
-"""
+#"""
 
 priors_oot = juliet.utils.generate_priors(par_ins+par_gp, dist_ins+dist_gp, hyper_ins+hyper_gp)
 
