@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gd
 import juliet
 import os
 
@@ -57,3 +58,27 @@ priors_oot = juliet.utils.generate_priors(par_ins+par_gp, dist_ins+dist_gp, hype
 
 data = juliet.load(priors=priors_oot, t_lc=tim_oot, y_lc=fl_oot, yerr_lc=fle_oot, GP_regressors_lc=tim_oot, out_folder=os.getcwd() + '/Out/Analysis/' + instrument)
 res = data.fit(sampler='dynesty', n_live_points=500)
+
+model = res.lc.evaluate(instrument)
+
+# Let's make sure that it works:
+fig = plt.figure(figsize=(16,9))
+gs = gd.GridSpec(2,1, height_ratios=[2,1])
+
+# Top panel
+ax1 = plt.subplot(gs[0])
+ax1.errorbar(tim_oot[instrument], fl_oot[instrument], yerr=fle_oot[instrument], fmt='.', alpha=0.3)
+ax1.plot(tim_oot[instrument], model, c='k', zorder=100)
+ax1.set_ylabel('Relative Flux')
+ax1.set_xlim(np.min(tim_oot[instrument]), np.max(tim_oot[instrument]))
+ax1.xaxis.set_major_formatter(plt.NullFormatter())
+
+# Bottom panel
+ax2 = plt.subplot(gs[1])
+ax2.errorbar(tim_oot[instrument], (fl_oot[instrument]-model)*1e6, yerr=fle_oot[instrument]*1e6, fmt='.', alpha=0.3)
+ax2.axhline(y=0.0, c='black', ls='--')
+ax2.set_ylabel('Residuals (ppm)')
+ax2.set_xlabel('Time (BJD)')
+ax2.set_xlim(np.min(tim_oot[instrument]), np.max(tim_oot[instrument]))
+
+plt.savefig(os.getcwd()+'/Out/Analysis/' + instrument + '/full_model.png')

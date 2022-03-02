@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/Out/Analysis/
+/Transits/Analysis/
+/Eclipses/Analysis/
